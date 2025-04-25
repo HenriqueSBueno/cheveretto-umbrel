@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  chevereto:
+    image: chevereto/chevereto:latest
+    container_name: chevereto
+    environment:
+      - VIRTUAL_HOST=chevereto.local
+      - CHEVERETO_DB_HOST=db
+      - CHEVERETO_DB_NAME=chevereto
+      - CHEVERETO_DB_USER=chevereto
+      - CHEVERETO_DB_PASS=chevereto
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    volumes:
+      - chevereto_data:/var/www/html
+    restart: always
+
+  db:
+    image: mysql:8.0
+    container_name: chevereto-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=chevereto
+      - MYSQL_USER=chevereto
+      - MYSQL_PASSWORD=chevereto
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+
+volumes:
+  chevereto_data:
+  db_data:
